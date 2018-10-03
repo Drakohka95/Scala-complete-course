@@ -71,9 +71,11 @@ object SortingStuff extends App {
   // // Замените знаки вопроса подходящим кодом
   // // Поправьте логику метода
   private def sort(stuff: List[Stuff], stuffBox: StuffBox): StuffBox = stuff match {
-    case item: Stuff =>
+    case rest: List[Stuff] =>
+      for (i <- 1 to rest.size ){
+        val item = rest
       val newBox = putStuffInRightBox(item, stuffBox)
-      sort(rest, newBox)
+      sort(rest, newBox)}
     case _ => {
       println("You can't put this things in Box")
       stuffBox
@@ -83,10 +85,10 @@ object SortingStuff extends App {
 
   // Метод должен положить вещь в правильную коробку
   private def putStuffInRightBox(item: Stuff, stuffBox: StuffBox) = item match {
-    case watches: Watches => stuffBox.copy(watches = watches :: stuffBox.watches)
-    case boots: Boots => stuffBox.copy(boots = boots :: stuffBox.boots)
-    case book: Book => stuffBox.copy(books = book :: stuffBox.books)
-    case junk: Stuff => stuffBox.copy(junk = junk :: stuffBox.junk)
+    case Watches(_, price) if price>1000 => stuffBox.copy(watches = it :: stuffBox.watches)
+    case Boots("Converse", _) | Boots("Adidas", _) => stuffBox.copy(boots = it :: stuffBox.boots)
+    case Book(_, true) => stuffBox.copy(books = it :: stuffBox.books)
+    case junk: Stuff => stuffBox.junk //copy(junk = junk :: stuffBox.junk)
   }
 
   def findMyKnife(stuffBox: StuffBox): Boolean = stuffBox match {
