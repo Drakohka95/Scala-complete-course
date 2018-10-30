@@ -73,7 +73,8 @@ object SortingStuff extends App {
   private def sort(stuff: List[Stuff], stuffBox: StuffBox): StuffBox = stuff match {
     case item :: rest => {
       val newBox = putStuffInRightBox(item, stuffBox)
-      sort(rest, newBox)}
+      sort(rest, newBox)
+    }
     case item :: Nil => {
       val newBox = putStuffInRightBox(item, stuffBox)
       newBox
@@ -83,26 +84,26 @@ object SortingStuff extends App {
 
   // Метод должен положить вещь в правильную коробку
   private def putStuffInRightBox(item: Stuff, stuffBox: StuffBox): StuffBox = item match {
-    case some:Watches  if (some.cost>1000) => stuffBox.copy(watches = some :: stuffBox.watches)
-    case  some:Boots if (some.brand == "Converse" || some.brand == "Adidas") => stuffBox.copy(boots = some :: stuffBox.boots)
-    case  some:Book if (some.isInteresting == true) => stuffBox.copy(books = some :: stuffBox.books)
+    case it: Watches if (it.cost > 1000) => stuffBox.copy(watches = it :: stuffBox.watches)
+    case it: Boots if (it.brand == "Converse" || it.brand == "Adidas") => stuffBox.copy(boots = it :: stuffBox.boots)
+    case it: Book if (it.isInteresting == true) => stuffBox.copy(books = it :: stuffBox.books)
     case junk => stuffBox.copy(junk = junk :: stuffBox.junk)
   }
 
   // Ищем нож
   def findMyKnife(stuffBox: StuffBox): Boolean = stuffBox.junk match {
-    case smth if smth contains(Knife) => true
+    case smth if smth contains (Knife) => true
     case _ => false
   }
 
   //вместо вопросов подставьте композицию функций  sortJunk и findMyKnife
-  //val knifeIsInJunk = (sortJunk andThen findMyKnife) (stuff)
-  val knifeIsInJunk = false
+  val knifeIsInJunk = (sortJunk _ andThen findMyKnife) (stuff)
+ // val knifeIsInJunk = false
 
   print(s"Is knife in a junk? - $knifeIsInJunk")
 
-  val test = sortJunk(stuff)
+ /* val test = sortJunk(stuff)
   val test2 = findMyKnife(test)
   println(test)
-  println(test2)
+  println(test2)*/
 }
