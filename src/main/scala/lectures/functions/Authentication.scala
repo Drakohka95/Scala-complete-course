@@ -38,8 +38,9 @@ object Authentication extends App {
     case user: LPUser if registeredLoginAndPassword.contains(user.credentials) => user
   }
 
+  val answer = (authByCard.orElse(authByLP)).lift
+
   val authenticated: List[Option[User]] = for (user <- testUsers) yield {
-    val answer = (authByCard.orElse(authByLP)).lift
     answer(user)
   }
 
