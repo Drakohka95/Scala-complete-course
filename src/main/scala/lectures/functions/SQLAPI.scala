@@ -41,7 +41,9 @@ class SQLAPI(resource: String) {
 
   val connection = (resource: String) => Connection(resource)
 
-  def execute(sql: String): String = ??? // use resource from constructor
+ def execute(sql: String): String =  (connection andThen openConnection)(sql)(sql)
+  // logParameter(openConnection(connection(sql))(sql))//(openConnection compose connection) (sql)
+
 
 
   def openConnection(connection: Connection): (String) => String =
@@ -49,6 +51,9 @@ class SQLAPI(resource: String) {
       connection.open execute sql
   }
 
+   new ((String) => Int) {
+     override def apply(v1: String): Int = 1
+   }
 }
 
 object SQLCheck extends App {
