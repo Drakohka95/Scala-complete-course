@@ -55,24 +55,32 @@ object CouriersWithComprehension extends App {
 
   // какие адреса были обслужены
   def serveAddresses(addresses: List[Address], couriers: List[Courier]) = {
-    var accum = 0
-    for (courier <- couriers;
-         trafficDegree = traffic().degree;
-         t <- 0 until courier.canServe if trafficDegree < 5 && accum < addresses.length
-    ) yield {
-      val addr = addresses(accum)
-      accum = accum + 1
-      addr
+    //    var accum = 0
+    //        for (courier <- couriers;
+    //             tr9afficDegree = traffic().degree;
+    //             t <- 0 until courier.canServe if trafficDegree < 5 && accum < addresses.length
+    //        ) yield {
+    //          val addr = addresses(accum)
+    //          accum = accum + 1
+    //          addr
+    //        }
+    def min (a: Int, b:Int): Boolean = {if (a<b) true else false}
+    def doWork(i: Int, n:Int): List[Address] = {
+      if (min (n + couriers(i).canServe, addresses.size)) {
+        if (min (i+2, couriers.size))
+          addresses.slice(n, n + couriers(i).canServe) ++ doWork(i+1, n + couriers(i).canServe)
+        else addresses.slice(n, n + couriers(i).canServe)
+      }
+      else addresses.slice(n, addresses.size)
     }
+    doWork (0,0)
   }
 
   def traffic(): Traffic = new Traffic(Math.random() * 10)
 
-  def printServedAddresses(addresses: List[Address], couriers: List[Courier]) =
-    for (a <- serveAddresses(addresses, couriers)) {
-      println(a.postIndex)
-    }
+  def printServedAddresses(addresses: List[Address], couriers: List[Courier]) = {
+    serveAddresses(addresses, couriers).foreach(serve => println(serve.postIndex))
+  }
 
   printServedAddresses(addrs, cours)
-
 }
