@@ -13,8 +13,8 @@ package lectures.collections.comprehension
   * Во второй - количество курьеров, вышедших на работу.
   *
   * Ваша задача:
-  *  Изучить код и переписать его так,
-  *  что бы в нем не было ни одного цикла for, ни одной переменной или мутабильной коллекции
+  * Изучить код и переписать его так,
+  * что бы в нем не было ни одного цикла for, ни одной переменной или мутабильной коллекции
   *
   * Для этого используйте функции комбинаторы: filter, withFilter, fold, map, flatMap и т.д.
   *
@@ -24,11 +24,7 @@ case class Traffic(degree: Double)
 
 object Courier {
   def couriers(courierCount: Int): List[Courier] =
-//    (for (i <- 1 to courierCount) yield {
-//      Courier(i)
-//    }).toList
     (Predef.intWrapper(1) to courierCount).map(i => Courier(i)).toList
-
 }
 
 case class Courier(index: Int) {
@@ -37,13 +33,7 @@ case class Courier(index: Int) {
 
 object Address {
   def addresses(addressesCount: Int): List[Address] =
-//    (for (i <- 1 to addressesCount) yield {
-//      Address(s"$i$i$i")
-//    }).toList
     (Predef.intWrapper(1) to addressesCount).map(i => Address(s"$i$i$i")).toList
-
-
-
 }
 
 case class Address(postIndex: String)
@@ -61,33 +51,14 @@ object CouriersWithComprehension extends App {
 
   // какие адреса были обслужены
   def serveAddresses(addresses: List[Address], couriers: List[Courier]) = {
+    def min(a: Int, b: Int): Int = {
+      if (a < b) a else b
+    }
 
-
-
-
-        var accum = 0
-            for (courier <- couriers;
-                 trafficDegree = traffic().degree;
-                 t <- 0 until courier.canServe if trafficDegree < 5 && accum < addresses.length
-            ) yield {
-              val addr = addresses(accum)
-              accum = accum + 1
-              addr
-            }
-//    def min (a: Int, b:Int): Boolean = {if (a<b) true else false}
-//    def doWork(i: Int, n:Int): List[Address] = {
-//      if (min (traffic().degree.toInt, 5)) {
-//      if (min (n + couriers(i).canServe, addresses.size)) {
-//        if (min (i+2, couriers.size))
-//          addresses.slice(n, n + couriers(i).canServe) ++ doWork(i+1, n + couriers(i).canServe)
-//        else addresses.slice(n, n + couriers(i).canServe)
-//      }
-//      else addresses.slice(n, addresses.size)
-//    }
-//      else List()
-//    }
-//
-//    doWork (0,0)
+    (Predef.intWrapper(0) until min(couriers.map { cour =>
+      if (traffic().degree < 5) cour.canServe else 0
+    }.sum, addresses.length))
+      .map { i => addresses(i) }.toList
   }
 
   def traffic(): Traffic = new Traffic(Math.random() * 10)
