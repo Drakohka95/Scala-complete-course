@@ -24,9 +24,11 @@ case class Traffic(degree: Double)
 
 object Courier {
   def couriers(courierCount: Int): List[Courier] =
-    (for (i <- 1 to courierCount) yield {
-      Courier(i)
-    }).toList
+//    (for (i <- 1 to courierCount) yield {
+//      Courier(i)
+//    }).toList
+    (Predef.intWrapper(1) to courierCount).map(i => Courier(i)).toList
+
 }
 
 case class Courier(index: Int) {
@@ -35,9 +37,13 @@ case class Courier(index: Int) {
 
 object Address {
   def addresses(addressesCount: Int): List[Address] =
-    (for (i <- 1 to addressesCount) yield {
-      Address(s"$i$i$i")
-    }).toList
+//    (for (i <- 1 to addressesCount) yield {
+//      Address(s"$i$i$i")
+//    }).toList
+    (Predef.intWrapper(1) to addressesCount).map(i => Address(s"$i$i$i")).toList
+
+
+
 }
 
 case class Address(postIndex: String)
@@ -55,25 +61,33 @@ object CouriersWithComprehension extends App {
 
   // какие адреса были обслужены
   def serveAddresses(addresses: List[Address], couriers: List[Courier]) = {
-    //    var accum = 0
-    //        for (courier <- couriers;
-    //             tr9afficDegree = traffic().degree;
-    //             t <- 0 until courier.canServe if trafficDegree < 5 && accum < addresses.length
-    //        ) yield {
-    //          val addr = addresses(accum)
-    //          accum = accum + 1
-    //          addr
-    //        }
-    def min (a: Int, b:Int): Boolean = {if (a<b) true else false}
-    def doWork(i: Int, n:Int): List[Address] = {
-      if (min (n + couriers(i).canServe, addresses.size)) {
-        if (min (i+2, couriers.size))
-          addresses.slice(n, n + couriers(i).canServe) ++ doWork(i+1, n + couriers(i).canServe)
-        else addresses.slice(n, n + couriers(i).canServe)
-      }
-      else addresses.slice(n, addresses.size)
-    }
-    doWork (0,0)
+
+
+
+
+        var accum = 0
+            for (courier <- couriers;
+                 trafficDegree = traffic().degree;
+                 t <- 0 until courier.canServe if trafficDegree < 5 && accum < addresses.length
+            ) yield {
+              val addr = addresses(accum)
+              accum = accum + 1
+              addr
+            }
+//    def min (a: Int, b:Int): Boolean = {if (a<b) true else false}
+//    def doWork(i: Int, n:Int): List[Address] = {
+//      if (min (traffic().degree.toInt, 5)) {
+//      if (min (n + couriers(i).canServe, addresses.size)) {
+//        if (min (i+2, couriers.size))
+//          addresses.slice(n, n + couriers(i).canServe) ++ doWork(i+1, n + couriers(i).canServe)
+//        else addresses.slice(n, n + couriers(i).canServe)
+//      }
+//      else addresses.slice(n, addresses.size)
+//    }
+//      else List()
+//    }
+//
+//    doWork (0,0)
   }
 
   def traffic(): Traffic = new Traffic(Math.random() * 10)
