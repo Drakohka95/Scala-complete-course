@@ -24,7 +24,7 @@ case class Traffic(degree: Double)
 
 object Courier {
   def couriers(courierCount: Int): List[Courier] =
-    (Predef.intWrapper(1) to courierCount).map(i => Courier(i)).toList
+    (1 to courierCount).map(i => Courier(i)).toList
 }
 
 case class Courier(index: Int) {
@@ -33,7 +33,7 @@ case class Courier(index: Int) {
 
 object Address {
   def addresses(addressesCount: Int): List[Address] =
-    (Predef.intWrapper(1) to addressesCount).map(i => Address(s"$i$i$i")).toList
+    (1 to addressesCount).map(i => Address(s"$i$i$i")).toList
 }
 
 case class Address(postIndex: String)
@@ -51,14 +51,11 @@ object CouriersWithComprehension extends App {
 
   // какие адреса были обслужены
   def serveAddresses(addresses: List[Address], couriers: List[Courier]) = {
-    def min(a: Int, b: Int): Int = {
-      if (a < b) a else b
-    }
 
-    (Predef.intWrapper(0) until min(couriers.map { cour =>
+    (0 until Math.min(couriers.map { cour =>
       if (traffic().degree < 5) cour.canServe else 0
     }.sum, addresses.length))
-      .map { i => addresses(i) }.toList
+      .map {i => addresses(i)}.toList
   }
 
   def traffic(): Traffic = new Traffic(Math.random() * 10)
