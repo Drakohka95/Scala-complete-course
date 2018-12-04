@@ -46,6 +46,7 @@ class SQLAPI(resource: String) {
 
 
 
+
   def openConnection(connection: Connection): (String) => String =
     (sql: String) => {
       connection.open execute sql
