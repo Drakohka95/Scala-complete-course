@@ -19,11 +19,11 @@ object MyListImpl extends App {
 
   case class MyList(data: List[Int]) {
 
-//    def flatMap(f: (Int => MyList)) =
-//      MyList(data.flatMap(inp => f(inp).data))
-//
-//    def map(f: ???) = ???
-//
+    def flatMap(f: Int => MyList): MyList =
+      MyList(data.flatMap(inp => f(inp).data))
+
+    def map(f: (Int) => Int): MyList = this.flatMap(num => MyList(List(f(num))))
+
 //    def foldLeft(acc: Int)(???): Int = ???
 //
 //    def filter(???) = ???
