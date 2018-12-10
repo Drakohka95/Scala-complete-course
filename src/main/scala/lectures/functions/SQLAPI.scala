@@ -37,11 +37,27 @@ class SQLAPI(resource: String) {
 
   }
 
-  private def logParameter(prm: String): String  = ???
+  private def logParameter(prm: String): String  = {
+    println(prm)
+    prm
+  }
 
   val connection = (resource: String) => Connection(resource)
 
- def execute(sql: String): String =  (connection andThen openConnection)(sql)(sql)
+ def execute(sql: String): String =  {
+  // val res1  = connection (logParameter(resource))
+   //val res1do = (connection compose logParameter) (resource)
+  // val res2  = openConnection(connection (logParameter(resource))) (logParameter(sql))
+  // val res21do  = openConnection((connection compose logParameter) (resource)) (logParameter(sql))
+  // val res22do  = (connection compose logParameter andThen openConnection) (resource) (logParameter(sql))
+   val res3 = logParameter(openConnection((connection compose logParameter) (resource)) (logParameter(sql)))
+   val res3do = ((connection compose logParameter andThen openConnection) andThen logParameter ) (resource) (logParameter(sql))
+
+  // val resfin = (connection andThen openConnection)(resource)(sql) //andThen logParameter _
+
+   //logParameter(res2)
+   "test"
+ }
   // logParameter(openConnection(connection(sql))(sql))//(openConnection compose connection) (sql)
 
 
