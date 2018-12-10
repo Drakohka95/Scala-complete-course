@@ -24,12 +24,20 @@ object MyListImpl extends App {
 
     def map(f: (Int) => Int): MyList = this.flatMap(num => MyList(List(f(num))))
 
-//    def foldLeft(acc: Int)(???): Int = ???
-//
+    def foldLeft(acc: Int)(f: (Int, Int) ⇒ Int): Int = {
+      val list = data
+      def goNext(acc: Int, cutList: List[Int]):Int = cutList match {
+        case a::tail => goNext(f(acc,a), tail)
+        case a::Nil => f(acc,a)
+        case Nil => acc
+      }
+      goNext(acc, list)
+    }
+
 //    def filter(???) = ???
   }
 
-//  require(MyList(List(1, 2, 3, 4, 5, 6)).map(_ * 2).data == List(2, 4, 6, 8, 10, 12))
+  require(MyList(List(1, 2, 3, 4, 5, 6)).map(_ * 2).data == List(2, 4, 6, 8, 10, 12))
 //  require(MyList(List(1, 2, 3, 4, 5, 6)).filter(_ % 2 == 0).data == List(2, 4, 6))
 //  require(MyList(List(1, 2, 3, 4, 5, 6)).foldLeft(0)((tpl) => tpl._1 + tpl._2) == 21)
 //  require(MyList(Nil).foldLeft(0)((tpl) => tpl._1 + tpl._2) == 0)
