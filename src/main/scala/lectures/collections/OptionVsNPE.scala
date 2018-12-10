@@ -27,19 +27,19 @@ import scala.util.Random
   *
   */
 class ResourceException extends Exception("Ресурс не отвечает")
-
+//лучше не трогать, модулирует ошибки
 trait FailUtil {
   val failRate: Double
 
   def timeToFail = Math.random() > failRate
 }
-
+//не трогать
 object ResourceProducer extends FailUtil {
   def produce = if (timeToFail) null else Resource(Random.alphanumeric.take(10).mkString)
 
   val failRate: Double = 0.3
 }
-
+//не трогать
 object ConnectionProducer extends FailUtil {
   val failRate: Double = 0.5
 
@@ -47,7 +47,7 @@ object ConnectionProducer extends FailUtil {
 
   def result(connection: Connection) = if (timeToFail) null else connection.resource.name
 }
-
+//можно менять входные и выходные данные
 case class Connection(resource: Resource) {
   private val defaultResult = "something went wrong!"
 
