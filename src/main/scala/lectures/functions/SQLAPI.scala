@@ -14,9 +14,9 @@ package lectures.functions
   * * * * * залогировать результат
   *
   * В результате в консоль должно быть выведено сообщение
-  *    some DB
-  *    some SQL
-  *    SQL has been executed. Congrats!
+  * some DB
+  * some SQL
+  * SQL has been executed. Congrats!
   *
   *
   * Обратите внимание на то, что композиция функций учит писать код в декларативном виде
@@ -37,22 +37,24 @@ class SQLAPI(resource: String) {
 
   }
 
-  private def logParameter(prm: String): String  = ???
+  private def logParameter(prm: String): String = {
+    println(prm)
+    prm
+  }
 
   val connection = (resource: String) => Connection(resource)
 
-  def execute(sql: String): String = ??? // use resource from constructor
-
+  def execute(sql: String): String = {
+    (logParameter _ andThen (openConnection _ compose connection compose logParameter) (resource) andThen logParameter) (sql)
+  }
 
   def openConnection(connection: Connection): (String) => String =
     (sql: String) => {
       connection.open execute sql
-  }
-
+    }
 }
 
 object SQLCheck extends App {
 
   new SQLAPI("some DB").execute("some SQL")
-
 }
