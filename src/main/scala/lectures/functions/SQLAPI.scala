@@ -52,10 +52,6 @@ class SQLAPI(resource: String) {
     (sql: String) => {
       connection.open execute sql
     }
-
-  new ((String) => Int) {
-    override def apply(v1: String): Int = 1
-  }
 }
 
 object SQLCheck extends App {
