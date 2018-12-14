@@ -9,16 +9,21 @@ object MergeSortImpl extends App {
 
   def mergeSort(data: Seq[Int]): Seq[Int] = {
 
-
-    def split (a: Int, b: Int) : List[(Int, Int)] = {
-      if (b - a> 1) split(a, (a+b)/2) ++ split (1 + (a+b)/2 , b)
-      else if  (b - a == 1) List((a,b))
-      else  List((a,a))
+    def sort (d: Seq[Int]):Seq[Int]  = d match {
+      case Nil => Nil-
+      case a:: Nil => Seq(a)
+      case d => {
+        val (r, l) = split (d)
+        merge (Seq(), sort(r), sort(l))
+      }
     }
-    //  if (data.size>1) mergeSort(data.take(data.size/2)) ++ mergeSort(data.drop(data.size/2))
-    // else
 
-    def merge(findata: Seq[Int], adata: Seq[Int], bdata: Seq[Int]): Seq[Int] = {
+    def split (d: Seq[Int]) : (Seq[Int], Seq[Int]) = {
+      val mid = d.size/2
+      d.splitAt(mid)
+    }
+
+    def merge(findata: Seq[Int] = Seq(), adata: Seq[Int], bdata: Seq[Int]): Seq[Int] = {
       if (adata.nonEmpty && bdata.nonEmpty) {
         if (adata.head < bdata.head) merge(findata :+ adata.head, adata.tail, bdata)
         else merge(findata :+ bdata.head, adata, bdata.tail)
@@ -28,7 +33,9 @@ object MergeSortImpl extends App {
       else findata
     }
 
-    data
+    sort(data)
   }
 
+  val a: Seq[Int] = Seq(7,6,5,4,3,2,1)
+  println(mergeSort(a))
 }
