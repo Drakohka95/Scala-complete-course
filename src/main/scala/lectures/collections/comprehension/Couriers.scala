@@ -49,12 +49,18 @@ object CouriersWithComprehension extends App {
   val addrs = addresses(addressesCount)
   val cours = couriers(courierCount)
 
+  def giveMe (acc:Int, date: List[Int], before: Int): Int = {
+    if (acc < before) date match {
+      case Nil => acc
+      case _ => giveMe(acc + date.head, date.tail, before)
+    }
+    else before
+  }
+
   // какие адреса были обслужены
   def serveAddresses(addresses: List[Address], couriers: List[Courier]) = {
 
-    (0 until Math.min(couriers.map { cour =>
-      if (traffic().degree < 5) cour.canServe else 0
-    }.sum, addresses.length))
+    (0 until giveMe(0, couriers.map {cour => if (traffic().degree < 5) cour.canServe else 0}, addresses.length))
       .map {i => addresses(i)}.toList
   }
 
