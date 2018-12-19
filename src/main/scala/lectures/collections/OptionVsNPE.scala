@@ -8,7 +8,7 @@ import scala.util.Random
   * Для успешного завершения задания вы должны реализовать метод businessLogic в объекте OptionVsNPE
   * Этот метод должен делать следующее:
   * * * * * Получить и распечатать результат или, если была ошибка ResourceException,
-  *         распечатать "Try again with new resource" и повторить все заново
+  * распечатать "Try again with new resource" и повторить все заново
   * * * * * Получить ресурс через ResourceProducer
   * * * * * Если ресурс не получен, кидать ResourceException (throw new ResourceException)
   * * * * * Если ресурс удачно получен, на его основе получить Connection
@@ -28,18 +28,21 @@ import scala.util.Random
   */
 class ResourceException extends Exception("Ресурс не отвечает")
 
+//лучше не трогать, модулирует ошибки
 trait FailUtil {
   val failRate: Double
 
   def timeToFail = Math.random() > failRate
 }
 
+//не трогать
 object ResourceProducer extends FailUtil {
   def produce = if (timeToFail) null else Resource(Random.alphanumeric.take(10).mkString)
 
   val failRate: Double = 0.3
 }
 
+//не трогать
 object ConnectionProducer extends FailUtil {
   val failRate: Double = 0.5
 
@@ -48,24 +51,39 @@ object ConnectionProducer extends FailUtil {
   def result(connection: Connection) = if (timeToFail) null else connection.resource.name
 }
 
+//можно менять входные и выходные данные
 case class Connection(resource: Resource) {
   private val defaultResult = "something went wrong!"
 
   //ConnectionProducer.result(this)
-  def result(): String = ???
+  private val newResult = ConnectionProducer.result(this)
+  def result(): String = Option(newResult).getOrElse(defaultResult)
 }
 
 case class Resource(name: String)
 
 object OptionVsNPE extends App {
-
+  //реализовать его
   def businessLogic: String = try {
     // ResourceProducer
-    val result: String = ???
+    val newResource =
+      Option(ResourceProducer.produce).getOrElse(throw new ResourceException)
+
+    val newConnection = {
+      Option(Connection(newResource)).getOrElse(Connection(newResource))
+//      val connection = Connection(newResource)
+//      if (connection != null) connection
+//      else Connection(newResource)
+    }
+
+    val result: String = newConnection.result()
     println(result)
     result
   } catch {
-    case e: ResourceException => ???
+    case e: ResourceException => {
+      println("Try again with new resource")
+      businessLogic
+    }
   }
 
   businessLogic
