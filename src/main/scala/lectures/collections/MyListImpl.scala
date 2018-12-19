@@ -27,8 +27,8 @@ object MyListImpl extends App {
     def foldLeft(acc: Int)(f: (Int, Int) => Int): Int = {
       val list = data
       def goNext(acc: Int, cutList: List[Int]):Int = cutList match {
-        case head::tail => goNext(f(acc,head), tail)
         case head::Nil => f(acc,head)
+        case head::tail => goNext(f(acc,head), tail)
         case Nil => acc
       }
       goNext(acc, list)
