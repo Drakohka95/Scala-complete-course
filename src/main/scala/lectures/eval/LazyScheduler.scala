@@ -27,7 +27,7 @@ object LazySchedulerView {
       */
     def lazySchedule(expirationTimeout: Long): SeqView[A, Seq[_]]  = {
       val i = c.instant().plusMillis(expirationTimeout)
-      f.view
+      f.view.filter(elem => c.instant().isBefore(i))
     }
   }
 }
@@ -42,6 +42,7 @@ object LazySchedulerViewExample extends App {
   print(d.length)
   Thread.sleep(1500)
   print(d.length)
+  //println(d.drop(1).length)
 }
 
 
