@@ -57,7 +57,7 @@ case class Connection(resource: Resource) {
 
   //ConnectionProducer.result(this)
   private val newResult = ConnectionProducer.result(this)
-  def result(): String = if (newResult != null) newResult else defaultResult
+  def result(): String = Option(newResult).getOrElse(defaultResult)
 }
 
 case class Resource(name: String)
@@ -66,15 +66,14 @@ object OptionVsNPE extends App {
   //реализовать его
   def businessLogic: String = try {
     // ResourceProducer
-    val newResource = {
-      val resourse = ResourceProducer.produce
-      if (resourse == null) throw new ResourceException
-      else resourse
-    }
+    val newResource =
+      Option(ResourceProducer.produce).getOrElse(throw new ResourceException)
+
     val newConnection = {
-      val connection = Connection(newResource)
-      if (connection != null) connection
-      else Connection(newResource)
+      Option(Connection(newResource)).getOrElse(Connection(newResource))
+//      val connection = Connection(newResource)
+//      if (connection != null) connection
+//      else Connection(newResource)
     }
 
     val result: String = newConnection.result()
