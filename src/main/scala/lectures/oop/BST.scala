@@ -38,9 +38,19 @@ case class BSTImpl(value: Int,
                    left: Option[BSTImpl] = None,
                    right: Option[BSTImpl] = None) extends BST {
 
-  def add(newValue: Int): BST = ???
+  def add(newValue: Int): BST = this.value match {
+    case k: Int if (k > newValue) => this.left.get.find(newValue)
+    case k: Int if (k < newValue) => this.right.get.find(newValue)
+    case k: Int if (k == newValue) => {println("Такое значение уже есть"); this}
+    case _ => ???
+  }
 
-  def find(value: Int): Option[BST] = ???
+  def find(findvalue: Int): Option[BST] = this.value match {
+    case v: Int if (v == findvalue) => Some(this)
+    case v: Int if (v > findvalue) => this.left.get.find(findvalue)
+    case v: Int if (v < findvalue) => this.right.get.find(findvalue)
+    case _ => {println ("Узла с таким значением на существует"); Some(this)}
+  }
 
   // override def toString() = ???
 
