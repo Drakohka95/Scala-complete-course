@@ -22,6 +22,7 @@ package lectures.oop
   * * * * * не должен использовать переменные или мутабильные структуры.
   *
   */
+//можно расширить
 trait BST {
   val value: Int
   val left: Option[BST]
@@ -31,7 +32,8 @@ trait BST {
 
   def find(value: Int): Option[BST]
 }
-
+//можно расширить
+//можно ли в методе find поменять value на key?
 case class BSTImpl(value: Int,
                    left: Option[BSTImpl] = None,
                    right: Option[BSTImpl] = None) extends BST {
@@ -62,6 +64,7 @@ object TreeTest extends App {
   val testTree = tree.add(markerItem).add(markerItem2).add(markerItem3)
 
   // check that search is correct
+  //поменять на markerItem2, markerItem3 ?
   require(testTree.find(markerItem).isDefined)
   require(testTree.find(markerItem).isDefined)
   require(testTree.find(markerItem).isDefined)
