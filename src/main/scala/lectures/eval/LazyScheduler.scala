@@ -14,6 +14,7 @@ import scala.collection.SeqView
   * Для решения задачи подставьте на место вопросительных знаков реализацию view.
   * Раскомментируйте и выполните тесты в lectures.eval.LazySchedulerTest
   */
+//нечаянно сделала в мастере, реверт не удался
 
 object LazySchedulerView {
 

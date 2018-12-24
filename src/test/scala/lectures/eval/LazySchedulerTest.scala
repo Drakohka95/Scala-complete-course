@@ -9,6 +9,7 @@ import LazySchedulerView._
   *
   *
   */
+//нечаянно сдела в мастере, реверт не удался
 class LazySchedulerTest extends WordSpec with PropertyChecks with Matchers {
 
   val nott = afterWord("not")
