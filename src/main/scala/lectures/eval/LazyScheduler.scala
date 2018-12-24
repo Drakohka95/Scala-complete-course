@@ -14,6 +14,7 @@ import scala.collection.SeqView
   * Для решения задачи подставьте на место вопросительных знаков реализацию view.
   * Раскомментируйте и выполните тесты в lectures.eval.LazySchedulerTest
   */
+//нечаянно сделала в мастере, реверт не удался
 
 object LazySchedulerView {
 
@@ -27,7 +28,7 @@ object LazySchedulerView {
       */
     def lazySchedule(expirationTimeout: Long): SeqView[A, Seq[_]]  = {
       val i = c.instant().plusMillis(expirationTimeout)
-      ???
+      f.view.filter(elem => c.instant().isBefore(i))
     }
   }
 }
@@ -42,6 +43,5 @@ object LazySchedulerViewExample extends App {
   print(d.length)
   Thread.sleep(1500)
   print(d.length)
+  //println(d.drop(1).length)
 }
-
-
